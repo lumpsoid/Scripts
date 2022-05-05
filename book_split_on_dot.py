@@ -7,7 +7,10 @@ from datetime import timedelta
 
 path_to_book = '/Users/qq/Библиотека Calibre/Riu Murakami/Miso-sup/Miso-sup - Riu Murakami.txt'
 name_of_book = 'Miso-sup - Riu Murakami'
+toc_name = 'Miso-sup TOC'
 path_to_book_zettel = '/Users/qq/Dropbox/Obsidian/20220227220307.md'
+
+toc_file_id = datetime.now() - timedelta(seconds=3)
 
 book_sentences = []
 with open(path_to_book, 'r', encoding='utf-8') as file:
@@ -27,13 +30,13 @@ for i in range(len(book_parts)):
     now = datetime.now() + timedelta(seconds=i)
     chapters.update({f'{name_of_book} {i}': now.strftime("%Y%m%d%H%M%S")})
     book_parts[i].insert(0, f'{name_of_book} {i}')
-    book_parts[i].extend(['\n', '\n', '\n', f'{name_of_book} {i-1}', f'{name_of_book} {i+1}'])
+    book_parts[i].extend(['\n', '\n', '\n', f'{name_of_book} {i-1}', f'{name_of_book} {i+1}', f'{toc_name} [[{toc_file_id}]]'])
 for parts in book_parts:
     for i in range(len(parts)):
         if not re.search(f'{name_of_book}', parts[i]) is None:
             parts[i] = parts[i] + f' [[{chapters.get(parts[i])}]]\n'  # adding links
 toc_file = [f'- [ ] {k} [[{v}]]\n' for k,v in chapters.items()]
-toc_file.insert(0, f'{name_of_book}\n')  # adding header to the toc file with name of the book
+toc_file.insert(0, f'{toc_name}\n')  # adding header to the toc file with name of the book
 toc_file.extend(['\n', '\n', '\n', 'книги [[20220227220307]]'])  # adding link to the book zettel
 
 #export
@@ -42,7 +45,7 @@ for i in range(len(book_parts)):
     if file_id:
         with codecs.open(f'/Users/qq/Dropbox/Obsidian/test/{file_id.group(0)}.md', 'w', encoding='utf-8') as file:
             file.write(''.join(book_parts[i]))
-toc_file_id = datetime.now() - timedelta(seconds=3)
+
 with codecs.open(f'/Users/qq/Dropbox/Obsidian/test/{toc_file_id.strftime("%Y%m%d%H%M%S")}.md', 'w', encoding='utf-8') as file:
         file.write(''.join(toc_file))
 
