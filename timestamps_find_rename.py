@@ -4,7 +4,6 @@ import numpy as np
 
 dir_path = '/home/qq/Vault/test'
 
-# рабочая версия
 with os.scandir(dir_path) as it:
     for entry in it:
         if not entry.name.startswith('.') and entry.is_file() and entry.name.endswith('.md') and not re.search(r'[0-9]{14}', entry.name):

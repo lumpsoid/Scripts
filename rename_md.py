@@ -3,7 +3,6 @@ import re  # regex
 
 dir_path = '/home/qq/Vault'
 
-# рабочая версия
 with os.scandir(dir_path) as it:
     for entry in it:
         if not entry.name.startswith('.') and entry.is_file() and entry.name.endswith('.md') and re.search(r'[0-9]{14} [а-яёА-ЯЁa-zA-Z0-9 ]+', entry.name):
