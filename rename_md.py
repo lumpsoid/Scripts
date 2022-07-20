@@ -1,9 +1,7 @@
 import os  # чтобы получить лист названия файлов
 import re  # regex
-import json  # для экспорта
-import codecs  # чтобы сохранять данные в utf-8 (русский язык)
 
-dir_path = '/home/qq/Vault/test'
+dir_path = '/home/qq/Vault'
 
 # рабочая версия
 with os.scandir(dir_path) as it:
