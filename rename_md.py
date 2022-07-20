@@ -8,7 +8,7 @@ with os.scandir(dir_path) as it:
     for entry in it:
         if not entry.name.startswith('.') and entry.is_file() and entry.name.endswith('.md') and re.search(r'[0-9]{14} [а-яёА-ЯЁa-zA-Z0-9 ]+', entry.name):
             file_path = dir_path + '/' + entry.name
-            new_file_name = dir_path + '/' + re.search(r'[0-9 ]{14}', entry.name).group(0) + '.md'
+            new_file_name = dir_path + '/' + re.search(r'[0-9]{14}', entry.name).group(0) + '.md'
             new_file = re.sub(r"[0-9 ]{15}", '', entry.name)  # сначала здесь будет новая первая строка
             new_file = [re.sub(r".md", '', new_file) + '\n']
             with open(file_path, encoding='utf-8') as f:

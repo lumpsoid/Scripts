@@ -1,1 +1,1 @@
-print(bool(None))
+print(523 // 10)
