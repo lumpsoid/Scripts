@@ -2,7 +2,7 @@ import os  # чтобы получить лист названия файлов
 import re  # regex
 import numpy as np
 
-dir_path = '/home/qq/Vault/test'
+dir_path = '/home/qq/Vault'
 
 with os.scandir(dir_path) as it:
     for entry in it:
@@ -22,13 +22,25 @@ with os.scandir(dir_path) as it:
                         timestamp = timestamp[:14]
                 else:
                     timestamp = re.search(r'[0-9]+', full_file[timestamp_in]).group(0)
+                # формируем данные
                 new_file_lines = [re.sub(r".md", '', entry.name) + '\n']
                 new_file_name = dir_path + '/' + timestamp + '.md'
+                old_link = re.sub(r".md", '', entry.name)
+                # перед тем как записывать все окончательно, нужно проверить старые линки
+                with os.scandir(dir_path) as vault:
+                    for note in vault:
+                        if not note.name.startswith('.') and note.is_file() and note.name.endswith('.md'):
+                            note_path = dir_path + '/' + note.name
+                            with open(note_path, encoding='utf-8') as n:
+                                full_note = n.readlines()
+                            for line in full_note:
+                                re.sub(f'\[\[{old_link}\]\]', f'[[{timestamp}]]', line)
+                            
+                # заключительный этап
                 with open(file_path, encoding='utf-8') as f:
                     full_file = f.readlines()
                 full_file.pop(timestamp_in)
                 new_file_lines.extend(full_file)
-                print(new_file_lines)
                 with open(file_path, 'w', encoding='utf-8') as file:
                     file.write(''.join(new_file_lines))
                 os.rename(file_path, new_file_name)
