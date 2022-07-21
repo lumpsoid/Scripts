@@ -1,1 +1,4 @@
-print(523 // 10)
+test = [1,2,3,4]
+print(test)
+test.clear()
+print(test)
